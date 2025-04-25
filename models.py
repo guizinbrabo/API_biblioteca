@@ -68,13 +68,15 @@ class Clientes(Base):
             'id': self.id,
             'nome': self.nome,
             'CPF': self.CPF,
+            'telefone': self.telefone,
             'endereco': self.endereco,
         }
         return dados_usuarios
 
-class Emprestimos(Base):
-    __tablename__ = 'emprestimos'
+class Veiculos(Base):
+    __tablename__ = 'veiculos'
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    cliente_associados = Column(Integer, ForeignKey('clientes.id'))
     marca = Column(Date, nullable=False)
     modelo = Column(Date, nullable=False)
     placa = Column(Integer, index=True, nullable=False)
@@ -82,7 +84,7 @@ class Emprestimos(Base):
 
 
     def __repr__(self):
-        return '<emprestimo {},{},{},{},{}'. format(self.id, self.marca, self.modelo, self.placa, self.ano_de_fabricacao)
+        return '<emprestimo {},{},{},{},{}'. format(self.id, self.cliente_associados, self.marca, self.modelo, self.placa, self.ano_de_fabricacao)
 
     def save(self):
         db_session.add(self)
@@ -95,6 +97,7 @@ class Emprestimos(Base):
     def get_emprestimo(self):
         dados_emprestimos = {
             'id': self.id,
+            'clientes associados': self.cliente_associados,
             'marca': self.marca,
             'modelo': self.modelo,
             'placa': self.placa,
